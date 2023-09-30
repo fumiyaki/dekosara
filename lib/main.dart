@@ -3,16 +3,20 @@ import 'package:camera/camera.dart';
 import 'package:image_picker/image_picker.dart';
 
 void main() async {
+  // アプリの初期化処理
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // 利用可能なカメラのリストを取得
   final cameras = await availableCameras();
   final firstCamera = cameras.first;
+
   runApp(MyApp(camera: firstCamera));
 }
 
 class MyApp extends StatelessWidget {
   final CameraDescription camera;
 
-  MyApp({required this.camera});
+  const MyApp({required this.camera});
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +48,7 @@ class _TakePictureScreenState extends State<TakePictureScreen> {
     _initializeCameraController();
   }
 
+  // カメラコントローラの初期化
   void _initializeCameraController() {
     _controller = CameraController(widget.camera, ResolutionPreset.medium);
     _controller.initialize().then((_) {
@@ -54,10 +59,24 @@ class _TakePictureScreenState extends State<TakePictureScreen> {
     });
   }
 
-  Future<void> _pickImageFromGallery() async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      // ここで取得した画像を加工や表示のための処理を行います
+  Future<void> _takePhoto() async {
+    // カメラが初期化されているかを確認
+    if (!_controller.value.isInitialized) {
+      print("Controller is not initialized.");
+      return;
+    }
+
+    // 写真を撮影
+    final XFile? file = await _controller.takePicture();
+
+    // 成功したら、編集ページに遷移
+    if (file != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => EditPictureScreen(imagePath: file.path),
+        ),
+      );
     }
   }
 
@@ -70,13 +89,13 @@ class _TakePictureScreenState extends State<TakePictureScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          CameraPreview(_controller),
+          CameraPreview(_controller), // カメラのプレビュー表示
           Positioned(
             bottom: 20,
-            left: 20,
+            right: 60,
             child: FloatingActionButton(
-              child: Icon(Icons.photo_library),
-              onPressed: _pickImageFromGallery,
+              child: Icon(Icons.camera),
+              onPressed: _takePhoto, // 写真撮影処理
             ),
           ),
         ],
@@ -86,7 +105,22 @@ class _TakePictureScreenState extends State<TakePictureScreen> {
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller.dispose(); // カメラコントローラの解放
     super.dispose();
+  }
+}
+
+class EditPictureScreen extends StatelessWidget {
+  final String imagePath;
+
+  EditPictureScreen({required this.imagePath});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Edit Picture")),
+      body: Image.asset(imagePath), // 撮影した画像を表示
+      // TODO: 画像編集の機能やUIを追加
+    );
   }
 }
