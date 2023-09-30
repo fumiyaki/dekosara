@@ -53,6 +53,39 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - images/daikon_white.webp
+    - images/hourensou_green.webp
+    - images/ikasumi_black.webp
+    - images/kona_gray.webp
+    - images/korokke_blown.webp
+    - images/lemon_yellow.webp
+    - images/orange_orange.webp
+    - images/powder_black.webp
+    - images/powder_blown_.webp
+    - images/powder_blown.webp
+    - images/powder_gray.webp
+    - images/powder_green.webp
+    - images/powder_orange.webp
+    - images/powder_purple.webp
+    - images/powder_red.webp
+    - images/powder_white.webp
+    - images/powder_yellow.webp
+    - images/powderandsouse.webp
+    - images/sauce_blown.webp
+    - images/souse_black.webp
+    - images/souse_blown_.webp
+    - images/souse_blown.webp
+    - images/souse_gray.webp
+    - images/souse_green.webp
+    - images/souse_orange.webp
+    - images/souse_purple.webp
+    - images/souse_red.webp
+    - images/souse_white.webp
+    - images/souse_yellow.webp
+    - images/syokuzai_main.webp
+    - images/tomato_red.webp
+    - images/trevise_purple.webp
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
