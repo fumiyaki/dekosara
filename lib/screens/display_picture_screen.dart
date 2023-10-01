@@ -45,16 +45,16 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
         });
       },
       onScaleStart: (ScaleStartDetails details) {
-        _previousScale = _scale;
+        if (selectedItem != null) {
+          selectedItem!._previousScale = selectedItem!.scale;
+        }
         setState(() {});
       },
       onScaleUpdate: (ScaleUpdateDetails details) {
-        _scale = _previousScale * details.scale;
-        setState(() {
-          if (selectedItem != null) {
-            selectedItem!.scale = _scale;
-          }
-        });
+        if (selectedItem != null) {
+          selectedItem!.scale = selectedItem!._previousScale * details.scale;
+          setState(() {});
+        }
       },
       child: Scaffold(
         extendBodyBehindAppBar: true,
@@ -161,51 +161,81 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
     );
   }
 
-  Widget _buildShape(Color color, String shape) {
-    if (shape == 'circle') {
-      return CircleAvatar(backgroundColor: color, radius: 25);
-    } else {
-      return Container(width: 50, height: 50, color: color);
-    }
-  }
-
   Widget _buildDraggableImage(String imagePath) {
-    var colors = [
-      Colors.white,
-      Colors.green,
-      Colors.black,
-      Colors.grey,
-      Colors.brown,
-      Colors.yellow,
-      Colors.orange,
-      Colors.brown,
-      Colors.red,
-      Colors.purple
-    ];
-    var random = Random();
-    Color randomColor = colors[random.nextInt(colors.length)];
+    final Map<String, Map<String, dynamic>> imageData = {
+      'images/shokuzai_daikon_white.webp': {
+        'color': Color(0xFFedede8),
+        'shape': '○'
+      },
+      'images/shokuzai_hourensou_green.webp': {
+        'color': Color(0xFF020d00),
+        'shape': '○'
+      },
+      'images/shokuzai_ikasumi_black.webp': {
+        'color': Color(0xFF3b372b),
+        'shape': '○'
+      },
+      'images/shokuzai_kona_gray.webp': {
+        'color': Color(0xFF491d12),
+        'shape': '○'
+      },
+      'images/shokuzai_korokke_blown.webp': {
+        'color': Color(0xFF745127),
+        'shape': '○'
+      },
+      'images/shokuzai_lemon_yellow.webp': {
+        'color': Color(0xFFecd548),
+        'shape': '⬜'
+      },
+      'images/shokuzai_orange_orange.webp': {
+        'color': Color(0xFFe97200),
+        'shape': '○'
+      },
+      'images/shokuzai_sauce_blown.webp': {
+        'color': Color(0xFF491d12),
+        'shape': '○'
+      },
+      'images/shokuzai_tomato_red.webp': {
+        'color': Color(0xFF8e0002),
+        'shape': '⬜'
+      },
+      'images/shokuzai_trevise_purple.webp': {
+        'color': Color(0xFF9a4a86),
+        'shape': '⬜'
+      },
+    };
+
+    Color color = imageData[imagePath]!['color'];
+    String shape = imageData[imagePath]!['shape'];
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: LongPressDraggable<String>(
         data: imagePath,
-        feedback:
-            Opacity(opacity: 0.7, child: _buildShape(randomColor, 'rectangle')),
+        feedback: Opacity(opacity: 0.7, child: _buildShape(color, shape)),
         child: Image.asset(imagePath, width: 50, height: 50),
         childWhenDragging:
-            Opacity(opacity: 0.7, child: _buildShape(randomColor, 'rectangle')),
+            Opacity(opacity: 0.7, child: _buildShape(color, shape)),
         onDragEnd: (details) {
           setState(() {
             items.add(DraggableItem(
                 imagePath: imagePath,
                 position: details.offset,
                 scale: 1.0,
-                color: randomColor,
-                shape: 'rectangle'));
+                color: color,
+                shape: shape));
           });
         },
       ),
     );
+  }
+
+  Widget _buildShape(Color color, String shape) {
+    if (shape == '○') {
+      return CircleAvatar(backgroundColor: color, radius: 25);
+    } else {
+      return Container(width: 50, height: 50, color: color);
+    }
   }
 
   Widget _getShapeIcon(DraggableItem item) {
@@ -232,11 +262,14 @@ class DraggableItem {
   double scale;
   final Color color;
   final String shape;
+  double _previousScale; // 追加
 
   DraggableItem(
       {required this.imagePath,
       required this.position,
       required this.scale,
       required this.color,
-      required this.shape});
+      required this.shape,
+      double? previousScale}) // 追加
+      : _previousScale = previousScale ?? 1.0; // 追加
 }
