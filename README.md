@@ -81,3 +81,14 @@
 ChatGPTはあくまで副操縦士で機長にはなりえないという至極当然の学びを得ました。
 とても楽しいハッカソンでした。
 ありがとうございあｍした。
+
+
+ChatGPT log
+https://chat.openai.com/share/cacd9c06-af56-4623-b244-2d0a566fe02f
+https://chat.openai.com/share/0f155059-7fa5-4d8e-b1e9-76f67488ae46
+https://chat.openai.com/share/42b4b90d-987f-4748-83a3-58d92bc4e135
+https://chat.openai.com/share/4c0f3bdc-101a-41b6-86a5-bace99575140
+https://chat.openai.com/share/d0abf44b-7cd7-4d99-acfa-ec7330f9f15d
+https://chat.openai.com/share/3be49f8a-682c-4058-b529-1a218541f2a6
+https://chat.openai.com/share/64edfa8a-0e3d-4a58-9d8c-611c981c2d12
+https://chat.openai.com/share/8af543f8-4f7e-432b-953e-d7150cd8bd0e
