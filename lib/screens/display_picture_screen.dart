@@ -30,6 +30,12 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
     'images/shokuzai_trevise_purple.webp',
   ];
 
+  void _deleteAllIcons() {
+    setState(() {
+      items.clear();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -51,6 +57,21 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
         });
       },
       child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pop(context),
+          ),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.delete_forever),
+              onPressed: _deleteAllIcons,
+            ),
+          ],
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
         body: Stack(children: [
           Positioned.fill(
             child: widget.imagePath != null
@@ -85,9 +106,12 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
               child: isSelected
                   ? Draggable<String>(
                       data: item.imagePath,
-                      feedback: Opacity(
-                        opacity: 0.7,
-                        child: _getShapeIcon(item),
+                      feedback: Transform.scale(
+                        scale: item.scale,
+                        child: Opacity(
+                          opacity: 0.7,
+                          child: _getShapeIcon(item),
+                        ),
                       ),
                       childWhenDragging: Container(),
                       child: itemWidget,
